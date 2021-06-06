@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Methodology</title>{% endblock title %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <h2>Methodology</h2>
+            <p>To achieve the objectives, the tracker was designed and organized into 3 parts, a user interface, a calculation and a visualization. The user interface was developed by using a Graphical User Interface (GUI) module in Python called tkinter. This section enabled user to choose the interested satellite base on catalog ID, and let user provided observer’s data (location, time of observation) to the program. Next, the calculation part, which was constructed in a versatile coding language, Python. By solving Kepler’s equation using Newton-Raphson method, the calculation granted us an eccentric anomaly (E) which was then converted into true anomaly (v), right accension (RA), declination (dec), altitude and finally azimuth of the satellite. In the final part, the visualization, which was framed by Flask, a micro web framework, was able to call an output via AJAX and make the visualization-web dynamically interactive. After a development of the program, an accuracy test was conducted. The test focused on an accuracy of 2 output, right accension and declination of satellite. The aim was comparing a position of 50 random LEO satellite to a worldwide-accepted online satellite tracker which data was available during 1-28 February 2021. The percentage error was then analyzed. First, the data was checked for missing and tested for normality distribution and outliners. Then, the data was analyzed descriptively using statistical software SPSS</p>
+        
+            <h2>Objectives</h2>
+            <ol>
+                <li>To create a tracking program which yielded an accurate position of an interested satellite.</li>
+                <li>To create a tracking program which represented in a 3D graphic.</li>
+            </ol>
+
+            <h4 style="margin-left: 2.5%;">Method</h4>
+            <ul style="list-style-type: none;">
+                <li id="part">Part 1: User interface</li>
+                    <ol id="method">
+                        <li>Graphical User Interface (GUI) was created by using Python tkinter module</li>
+                        <li>The program obtained user input and communicate with calculation part.</li>
+                    </ol>
+                <li id="part">Part 2: Calculation</li>
+                    <ol id="method">
+                        <li>Mean anomaly (M) was directly calculated from epoch (t).</li>
+                        <li>Calculated eccentric anomaly (E) by solving Kepler’s equation using Newton-Raphson numerical method of 10 iterations.</li>
+                        <li>The eccentric anomaly was then converted into a true anomaly (v).</li>
+                        <li>Right accension (RA) and declination (dec) of satellite were then calculated using a spherical trigonometry.</li>
+                    </ol>
+                <li id="part">Part 3: Visualization</li>
+                    <ol id="method">
+                        <li>A visualization web was dynamically updated when user commit a visualize command.</li>
+                        <li>The visualization web was ready.</li>
+                    </ol>
+            </ul>
+    </div>
+</div>
+{% endblock content %}
+

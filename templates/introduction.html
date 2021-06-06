@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Introduction</title>{% endblock title %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <h2 >Introduction</h2>
+        <br>
+        <p  style="text-justify: inter-word;">The process of orbit determination is crucial for tracking the satellite, especially the LEO. Since, the LEO is the most common man-made object orbiting around the Earth1 and because of its fast-moving nature which make it complicate to correctly determine the position at any given epoch. Current method to obtain the precise position of satellite is done via two-line element set (TLE) of the North American Defense (NORAD). The TLE, which consists of a satellite identifier, epoch and six orbit parameter 2, was then used by mathematic model of propagator such as SGP, SDP, SGP4, etc3. The model will reconstruct the Kepler’s parameters and used them in orbit determination. However, the complexity of the propagation model makes it hard to access by most of the novice users. To make the satellite tracker more accessible and more user-friendly, it is important to simplify the mathematic and enhance the tracker’s ability to visualize a result in the 3D graphic. 
+            This work thus attempted to create a satellite tracking program which had a user interface and presented the result in a 3D graphic. To meet this goal the program was created, after that, the test was conducted to see whether if the percentage error compared to an online-tracker 4 is 0.000%.
+        </p>
+    </div>
+</div>
+{% endblock content %}
+
+
+

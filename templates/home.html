@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Homepage</title>{% endblock title %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="jumbotron">
+        <h1 >Celestial Equation</h1>
+        <p class="lead">A high school project on Astronomy and Astrophysics</p>
+
+        <h2 style="margin-top: 3rem;">Abstract</h4>
+        <p style="text-justify: inter-word;">Low earth orbit (LEO) satellite is an artificial Earth-centered orbit with altitude of 2,000 km or less. The LEO is used widely in many applications, for instance, satellite imaging, space station, etc. To use the satellite effectively, a satellite tracker is required. A tracker is used to calculate and visualize the position of satellite which mostly represented in a 2D graphic. Therefore, most of the novice users who are not familiar with the field of Astronomy may find that the tracker is complicated and puzzling to use. This work thus aimed to create a satellite tracking program that yielded an accurate position and visualized the result in a 3D graphic. To meet these goals, program which consisted of three main parts was created and tested. In the first part, the satellite data was automatically obtained in a two-line element (TLE) format and observer’s location data was also provided by user. The data was then sent to the next part, the calculation part, which determined the right accension (RA) and declination (dec) of satellite for a given time by using the conventional approach, solving Kepler’s equation with Newton-Raphson method. Finally, in the visualization part, the output was transformed and showed in a 3D perspective of observer’s hemisphere. The test result showed that the accuracy of the program compared to non-SDP/SGP model was acceptable, with the error in RA and dec of -0.0054% (IQR = 0.0115%), -0.0057% (IQR = 0.0553%) respectively. To summarize, this work resulted a highly functional satellite tracking program, which was efficient and was also user-friendly. Further implications may be done to improve the model and make the tracker more available in many more devices.</p>
+    </div>
+</div>
+
+
+{% endblock content %}
+
