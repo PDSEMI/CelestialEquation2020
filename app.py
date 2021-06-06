@@ -1,3 +1,4 @@
+from astropy.coordinates import calculation
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 from astropy.time import Time
@@ -6,6 +7,7 @@ from flask.helpers import url_for
 from spacetrack import SpaceTrackClient
 from astropy.time import TimezoneInfo  # Specifies a timezone
 import astropy.units as u
+import calculation as c
 
 
 app = Flask(__name__)
@@ -117,13 +119,6 @@ def search():
 @app.route('/calculate',methods = ['GET', 'POST'])
 def calculate():
     data = Satellite.query.get(1)
-    return render_template('calculate.html', data=data)
-
-"""
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "tle.json")
-    data = json.load(open(json_url))
-    sat = c.satData(data)
     output = {}
     if request.method == "POST":
         date = request.form["date"]
@@ -132,13 +127,13 @@ def calculate():
         print(type(timezone))
         print(timezone)
         timezone = -int(timezone)
-        epoch = c.EpochToDate(sat.epoch)
-        M = format(float(c.calMean(epoch, date, sat.motion, sat.M, timezone)), '.3f')
-        E = format(float(c.solveE(M, sat.e)), '.3f')
-        v = format(float(c.calTrue(E, sat.e)), '.3f')
+        epoch = c.EpochToDate(data.epoch)
+        M = format(float(c.calMean(epoch, date, data.motion, data.M, timezone)), '.3f')
+        E = format(float(c.solveE(M, data.e)), '.3f')
+        v = format(float(c.calTrue(E, data.e)), '.3f')
         t = date - epoch
         t = t.sec
-        position = c.toRA(sat.i, sat.peri, v, sat.RAAN)
+        position = c.toRA(data.i, data.peri, v, data.RAAN)
         RA = format(float(position[0]), '.3f')
         dec = format(float(position[1]), '.3f')
     
@@ -158,12 +153,13 @@ def calculate():
             "RA":RA,
             "dec":dec
         }
+        """
         with open("static/celes.txt", "w") as json_file:
             data = json.dump(celes_obj, json_file, indent=4)
-        
+        """
         
     return render_template('calculate.html', data=data, output = output)
-"""
+
 
 
 
