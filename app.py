@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 from astropy.time import Time
 from flask import Flask, render_template, redirect, request, json
 from flask.helpers import url_for
@@ -8,7 +9,7 @@ import astropy.units as u
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
 def TLE(id):
@@ -52,7 +53,19 @@ def TLE(id):
 
 class Satellite(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-
+    name = db.Column(db.String(20))
+    desig = db.Column(db.String(20))
+    beta = db.Column(db.String(20))
+    second = db.Column(db.String(20))
+    first = db.Column(db.String(20))
+    epoch = db.Column(db.String(20))
+    catalog = db.Column(db.String(20))
+    i = db.Column(db.String(20))
+    RAAN = db.Column(db.String(20))
+    e = db.Column(db.String(20))
+    peri = db.Column(db.String(20))
+    M = db.Column(db.String(20))
+    motion = db.Column(db.String(20))
 
 @app.route('/')
 def home():
@@ -78,14 +91,34 @@ def search():
     if request.method == "POST":
         if request.form.get("search"):
             id = request.form["id"]
-            data = TLE(id)  
+            data = TLE(id)
+
+            obj = Satellite.query.get(1)
+            obj.name = data["name"]
+            obj.desig = data["desig"]
+            obj.beta = data["beta"]
+            obj.second = data["second"]
+            obj.first = data["first"]
+            obj.epoch = data["epoch"]
+            obj.catalog = data["catalog"]
+            obj.i = data["i"]
+            obj.RAAN = data["RAAN"]
+            obj.e = data["e"]
+            obj.peri = data["peri"]
+            obj.M = data["M"]
+            obj.motion = data["motion"]
+            
+            
+            db.session.commit()
 
     return render_template("search.html", data = data)
 
 
 @app.route('/calculate',methods = ['GET', 'POST'])
 def calculate():
-    return "calculate"
+    data = Satellite.query.get(1)
+    return render_template('calculate.html', data=data)
+
 """
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "tle.json")
