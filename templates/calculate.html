@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Calculation</title>{% endblock title %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div>
+        <form action="{{url_for('calculate')}}" method="POST">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="datetime-local" class="form-control"  step="1" name="date" aria-describedby="dateHelp">
+                <input type="hidden" name="timezone" id="timezone" value="">
+                <small id="dateHelp" class="form-text text-muted">Please enter date of observation (User local Timezone)</small>
+            </div>
+            <button type="submit" name="date" value="date" class="btn btn-primary">Calculate</button>
+        </form>
+       
+    </div>
+    <br>
+    <div>
+        <div class="row grid-divider">
+            <div class="col jumbotron">
+                <h3>Input</h3>
+                <table class="table table-fixed" id="input" aria-describedby="inputHelp">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">FIELD</th>
+                            <th scope="col">DATA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">{{data["name"]}}</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">NORAD ID</th>
+                            <th scope="col">{{data["catalog"]}}</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Inclination (i)</th>
+                            <th scope="col">{{data["i"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Right ascension of ascending node (RAAN)</th>
+                            <th scope="col">{{data["RAAN"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Argument of perigee (&#969)</th>
+                            <th scope="col">{{data["peri"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Mean anomaly (M)</th>
+                            <th scope="col">{{data["M"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">eccentricity</th>
+                            <th scope="col">{{data["e"]}}</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Mean motion</th>
+                            <th scope="col">{{data["motion"]}} rev/day</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Epoch</th>
+                            <th scope="col">{{data["epoch"]}}</th>
+                        </tr>
+            
+                    </tbody>
+                    </table>
+            </div>
+            <div class="col jumbotron">
+                <h4>Output</h4>
+                <table class="table table-fixed" id="output" aria-describedby="outputHelp">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">FIELD</th>
+                            <th scope="col">DATA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="col">Mean anomaly (M)</th>
+                            <th scope="col">{{output["M"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Eccentric anomaly (E)</th>
+                            <th scope="col">{{output["E"]}}&#176</th>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="col">true anomaly (v)</th>
+                            <th scope="col">{{output["v"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Right ascension (RA)</th>
+                            <th scope="col">{{output["RA"]}}&#176</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Declination (dec)</th>
+                            <th scope="col">{{output["dec"]}}&#176</th>
+                        </tr>
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="jumbotron">
+        <canvas id = "canvas"  style="align-items: center; margin-top: 1.5rem; width: 100%;"></canvas>
+    </div>
+</div>
+
+<script>
+    var d = new Date()
+    document.getElementById('timezone').value = d.getTimezoneOffset()/60;
+    
+</script>
+
+<!--vertex shader-->
+<script id = "vertex-shader-3d" type="x-shader/x-vertex">
+    attribute vec4 a_position;
+    attribute vec4 a_color;
+    
+    uniform mat4 u_matrix;
+    
+    varying vec4 v_color;
+    
+    void main() {
+      gl_Position = u_matrix * a_position;
+      gl_PointSize = 20.0;
+      v_color = a_color;
+    }
+</script>
+    
+    <!--fragment shader-->
+<script id = "fragment-shader-3d" type="x-shader/x-fragment">
+    precision mediump float;
+    
+    varying vec4 v_color;
+    
+    uniform mat4 u_colorMulti;
+    
+    void main() {
+      gl_FragColor = v_color;
+    }
+</script>
+    
+<script src = "{{ url_for('static', filename = 'jquery-1.7.1.min.js') }}"></script>
+<script src = "{{ url_for('static', filename = 'jquery-gman-circle.js') }}"></script>
+<script src = "{{ url_for('static', filename = 'jquery-ui-1.8.16.custom.min.js') }}"></script>
+<script src = "{{ url_for('static', filename = 'jquery.gman.ui.js') }}" ></script>
+<script src = "{{ url_for('static', filename = 'jquery.mousecapture.js') }}"></script>
+<script src= "{{ url_for('static', filename = 'webgl-utils.js') }}" ></script>
+<script src= "{{ url_for('static', filename = 'webgl-lessons-ui.js') }}" ></script>
+<script src = "{{ url_for('static', filename = 'gl-matrix.js') }}" ></script>
+<script src = "{{ url_for('static', filename = 'Hemisphere.js') }}"></script>
+<script src = "{{url_for('static', filename = 'test.js')}}"></script>
+
+{% endblock content %}
+

@@ -5,6 +5,8 @@ chardet==4.0.0
 click==8.0.1
 colorama==0.4.4
 Flask==2.0.1
+Flask-SQLAlchemy==2.5.1
+greenlet==1.1.0
 gunicorn==20.1.0
 idna==2.10
 itsdangerous==2.0.1
@@ -19,5 +21,6 @@ requests==2.25.1
 rush==2021.4.0
 six==1.16.0
 spacetrack==0.16.0
+SQLAlchemy==1.4.17
 urllib3==1.26.5
 Werkzeug==2.0.1

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Search</title>{% endblock title %}
+
+{% block content %}
+<br>
+<div class="container">
+    <form action="{{url_for('search')}}" method = "POST"> 
+        <div class="form-group">
+          <label for="id">Satellite ID</label>
+          <input type="text" class="form-control" id="id" aria-describedby="IDHelp" name="id">
+          <small id="IDHelp" class="form-text text-muted">Please enter Norad satellite ID. For example, 25544 for "ISS (ZARYA)"</small>
+        </div>
+        <button type="submit" name="search" value="search" class="btn btn-primary">Search</button>
+      </form>
+      <br>
+      <div class="jumbotron">
+      <table class="table table-fixed" id="data" aria-describedby="dataHelp">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">FIELD</th>
+                <th scope="col">DATA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">{{data["name"]}}</th>
+            </tr>
+            <tr>
+                <th scope="col">International Designator</th>
+                <th scope="col">{{data["desig"]}}</th>
+            </tr>
+            <tr>
+                <th scope="col">NORAD ID</th>
+                <th scope="col">{{data["catalog"]}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Inclination (i)</th>
+                <th scope="col">{{data["i"]}}&#176</th>
+            </tr>
+            <tr>
+                <th scope="col">Right ascension of ascending node (RAAN)</th>
+                <th scope="col">{{data["RAAN"]}}&#176</th>
+            </tr>
+            <tr>
+                <th scope="col">Argument of perigee (&#969)</th>
+                <th scope="col">{{data["peri"]}}&#176</th>
+            </tr>
+            <tr>
+                <th scope="col">Mean anomaly (M)</th>
+                <th scope="col">{{data["M"]}}&#176</th>
+            </tr>
+            <tr>
+                <th scope="col">eccentricity</th>
+                <th scope="col">{{data["e"]}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Mean motion</th>
+                <th scope="col">{{data["motion"]}} rev/day</th>
+            </tr>
+            <tr>
+                <th scope="col">Epoch</th>
+                <th scope="col">{{data["epoch"]}}</th>
+            </tr>
+
+        </tbody>
+        </table>
+        </div>
+      <small id="dataHelp" class="form-text text-muted">Data is directly requested from space-track</small>
+</div>
+
+{% endblock content %}
+

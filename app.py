@@ -1,4 +1,4 @@
-
+from flask_sqlalchemy import SQLAlchemy
 from astropy.time import Time
 from flask import Flask, render_template, redirect, request, json
 from flask.helpers import url_for
@@ -8,7 +8,50 @@ import astropy.units as u
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = SQLAlchemy(app)
 
+def TLE(id):
+    username = 'natthaphat_ph@kkumail.com'
+    password = 'PDSEMI1215natthaphat'
+    st = SpaceTrackClient(username, password)
+    data = st.tle_latest(norad_cat_id=[id], ordinal=1, format='3le')    
+    tle_data = data[1:-1]  
+    #print("tle data : ", tle_data)
+    tle_data_strip = tle_data.strip()
+    tle_data_splitlines = tle_data_strip.splitlines()
+    line1 = tle_data_splitlines
+    line2 = tle_data_splitlines[1].split()
+    line3 = tle_data_splitlines[2].split()
+    if line2[-6] == line2[3]:
+        date = line2[3]
+    else:
+        date = line2[3]+line2[4]
+    tle_obj = {
+        "name":line1[0],
+        "desig":line2[2],
+        "beta":line2[-3],
+        "second":line2[-4],
+        "first":line2[-5],
+        "epoch":date,
+        "catalog":line3[1],
+        "i":line3[2],
+        "RAAN":line3[3],
+        "e":"0." + line3[4],
+        "peri":line3[5],
+        "M":line3[6],
+        "motion":line3[7],
+    }
+    
+    #print(tle_obj)
+    """
+    with open("tle.json", "w") as json_file:
+        data = json.dump(tle_obj, json_file, indent=4)
+    """
+    return tle_obj
+
+class Satellite(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
 
 
 @app.route('/')
@@ -30,21 +73,16 @@ def method():
 
 @app.route('/search',methods = ['GET', 'POST'])
 def search():
-    return "search"
-"""
+    #return "search"
     data = []
-    
-    search for satellite by ID
     if request.method == "POST":
         if request.form.get("search"):
             id = request.form["id"]
-            data = TLE(id)
-        if request.form.get("date"):
-            date = request.form["date"]  
+            data = TLE(id)  
 
     return render_template("search.html", data = data)
 
-"""
+
 @app.route('/calculate',methods = ['GET', 'POST'])
 def calculate():
     return "calculate"
